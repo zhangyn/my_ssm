@@ -9,5 +9,9 @@ import com.zzz.demo.ssm_web.pagemodel.UserPage;
 public interface UserService {
     int add(UserPage page);
 
+    int update(String id,UserPage page);
+
+    int delete(String id);
+
     User getByid(String id);
 }

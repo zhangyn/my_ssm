@@ -24,4 +24,17 @@
         #{age,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
     </insert>
 
+    <update id="update" parameterType="com.zzz.demo.ssm_web.model.User" >
+        update t_user
+        <set>
+            name = #{name,jdbcType=VARCHAR},
+            age = #{age,jdbcType=INTEGER},
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        delete from t_user
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
 </mapper>

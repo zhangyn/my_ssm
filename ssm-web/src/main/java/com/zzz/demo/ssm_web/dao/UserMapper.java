@@ -10,4 +10,9 @@ public interface UserMapper {
     User selectByPrimaryKey(String id);
 
     int insert(User user);
+
+    int update(User user);
+
+    int delete(String id);
+
 }

@@ -27,6 +27,18 @@ public class UserServiceImpl implements UserService {
         return 1;
     }
 
+    public int update(String id, UserPage page) {
+        User user = new User();
+        user.setId(id);
+        user.setName(page.getName());
+        user.setAge(page.getAge());
+        return userMapper.update(user);
+    }
+
+    public int delete(String id) {
+        return userMapper.delete(id);
+    }
+
     public User getByid(String id) {
         return userMapper.selectByPrimaryKey(id);
     }

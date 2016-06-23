@@ -16,6 +16,7 @@
         <mybatis-spring.version>1.2.2</mybatis-spring.version>
         <mysql.version>5.1.13</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
+        <jackson2.version>2.2.3</jackson2.version>
     </properties>
     <dependencies>
         <!--spring mvc-->
@@ -29,6 +30,7 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <!-- mybatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -51,6 +53,28 @@
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>${commons-dbcp.version}</version>
+        </dependency>
+
+        <!-- JSON begin -->
+     <!--   <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson2.version}</version>
         </dependency>
     </dependencies>
     <build>
