@@ -17,6 +17,8 @@
         <mysql.version>5.1.13</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <jackson2.version>2.2.3</jackson2.version>
+        <druid.version>1.0.15</druid.version>
+        <aspectj.version>1.8.6</aspectj.version>
     </properties>
     <dependencies>
         <!--spring mvc-->
@@ -56,16 +58,6 @@
         </dependency>
 
         <!-- JSON begin -->
-     <!--   <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -75,6 +67,18 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson2.version}</version>
+        </dependency>
+
+        <!--druid-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
     </dependencies>
     <build>
