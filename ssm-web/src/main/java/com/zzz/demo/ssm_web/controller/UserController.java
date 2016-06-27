@@ -34,6 +34,14 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value = "/user/save", method = RequestMethod.POST)
+    public Result testsave(@ModelAttribute UserPage page) {
+        int code = userService.saveUser(page);
+        Result result = new Result();
+        result.setCode(code);
+        return result;
+    }
+
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public Result update(@PathVariable("id") String id, @ModelAttribute UserPage page) {
         int code = userService.update(id, page);
@@ -49,5 +57,7 @@ public class UserController {
         result.setCode(code);
         return result;
     }
+
+
 
 }

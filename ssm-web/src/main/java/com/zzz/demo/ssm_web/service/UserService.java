@@ -14,4 +14,7 @@ public interface UserService {
     int delete(String id);
 
     User getByid(String id);
+
+
+    int saveUser(UserPage page);
 }

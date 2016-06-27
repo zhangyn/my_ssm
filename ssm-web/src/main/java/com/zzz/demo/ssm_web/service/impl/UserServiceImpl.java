@@ -23,7 +23,11 @@ public class UserServiceImpl implements UserService {
         user.setName(page.getName());
         user.setAge(page.getAge());
         user.setCreatetime(new Date());
-        userMapper.insert(user);
+        try {
+            userMapper.insert(user);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         return 1;
     }
 
@@ -39,7 +43,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.delete(id);
     }
 
+
+
     public User getByid(String id) {
         return userMapper.selectByPrimaryKey(id);
+    }
+
+    public int saveUser(UserPage page) {
+        add(page);
+
+        User user = new User();
+        user.setId("2");
+        user.setName(page.getName());
+        user.setAge(page.getAge());
+        user.setCreatetime(new Date());
+        userMapper.insert(user);;
+        return 0;
     }
 }

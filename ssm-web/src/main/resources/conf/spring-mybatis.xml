@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
@@ -25,7 +29,7 @@
         <!-- 获取连接最大等待时间 -->
         <property name="maxWait" value="6000"/>
         <!-- 连接池最大空闲 -->
-        <property name="maxIdle"  value="30"/>
+        <property name="maxIdle" value="30"/>
         <!-- 连接池最小空闲 -->
         <property name="minIdle" value="10"/>
         <!-- 自动清除无用连接 -->
@@ -38,38 +42,38 @@
         </property>
 
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
         <!-- 用来检测连接是否有效的sql，要求是一个查询语句-->
-        <property name="validationQuery" value="SELECT 1 FROM DUAL" />
+        <property name="validationQuery" value="SELECT 1 FROM DUAL"/>
         <!-- 申请连接的时候检测 -->
-        <property name="testWhileIdle" value="true" />
+        <property name="testWhileIdle" value="true"/>
         <!-- 申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能 -->
-        <property name="testOnBorrow" value="false" />
+        <property name="testOnBorrow" value="false"/>
         <!-- 归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能  -->
-        <property name="testOnReturn" value="false" />
+        <property name="testOnReturn" value="false"/>
         <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-        <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="50" />
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="50"/>
         <!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
                 监控统计用的filter:stat
                 日志用的filter:log4j
                防御SQL注入的filter:wall -->
-        <property name="filters" value="stat" />
+        <property name="filters" value="stat"/>
 
     </bean>
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource" p:configLocation="classpath:conf/mybatis.xml"
-          p:mapperLocations="classpath:mapper/**.xml" /><!-- configLocation为mybatis属性
+          p:mapperLocations="classpath:mapper/**.xml"/><!-- configLocation为mybatis属性
 		mapperLocations为所有mapper -->
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
           p:basePackage="com.zzz.demo.ssm_web.dao"
-          p:sqlSessionFactoryBeanName="sqlSessionFactory" />
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
 
 
     <!-- 配置druid监控spring jdbc -->
@@ -84,7 +88,40 @@
         </property>
     </bean>
     <aop:config>
-        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/>
+    </aop:config>
+
+    <!-- 对数据源进行事务管理 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+    <!-- 拦截器方式配置事物 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="append*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="modify*" propagation="REQUIRED"/>
+            <tx:method name="edit*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="remove*" propagation="REQUIRED"/>
+            <tx:method name="repair" propagation="REQUIRED"/>
+            <tx:method name="delAndRepair" propagation="REQUIRED"/>
+
+            <tx:method name="get*" propagation="SUPPORTS"/>
+            <tx:method name="find*" propagation="SUPPORTS"/>
+            <tx:method name="load*" propagation="SUPPORTS"/>
+            <tx:method name="search*" propagation="SUPPORTS"/>
+            <tx:method name="datagrid*" propagation="SUPPORTS"/>
+
+            <tx:method name="*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.zzz.demo.ssm_web.service.impl.*Impl.*(..))"/>
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
     </aop:config>
 
 </beans>
