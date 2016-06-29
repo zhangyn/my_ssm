@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_EMPTY)
 public class JsonResult {
 
+    public JsonResult() {
+    }
     public JsonResult(int code, String msg) {
         this.code = code;
         this.msg = msg;
